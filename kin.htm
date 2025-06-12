@@ -1,0 +1,907 @@
+
+function loadMessages() {
+
+  const messageList = document.getElementById('messageList'); // Correction des parenthèses et des guillemets
+
+  const newMessages = [
+
+      "Message 3 : N'oubliez pas de signer le carnet.",
+
+      "Message 4 : Sortie scolaire prévue le 5 mai.",
+
+      "Message 5 : Les cours reprennent le lundi 8 avril."
+
+  ];
+
+
+
+  // Correction de la boucle forEach et de la création de la liste
+
+  newMessages.forEach(msg => {
+
+      const li = document.createElement('li');
+
+      li.textContent = msg;
+
+      messageList.appendChild(li); // Ajout de chaque message à la liste
+
+  });
+
+}
+
+
+
+
+
+  
+
+  document.getElementById('contactForm').addEventListener('submit', function(event) {
+
+    event.preventDefault(); // Empêche l'envoi classique
+
+  
+
+    const nom = document.getElementById('nom').value;
+
+    const email = document.getElementById('email').value;
+
+    const message = document.getElementById('message').value;
+
+  
+
+    // Pour afficher la réponse
+
+    const responseDiv = document.getElementById('responseMessage');
+
+  
+
+    // Exemple sans serveur : juste un message de confirmation
+
+    if (nom && email && message) {
+
+      responseDiv.innerHTML = `<p style="color:green;">Merci ${nom}, votre message a été envoyé !</p>`;
+
+    } else {
+
+      responseDiv.innerHTML = `<p style="color:red;">Veuillez remplir tous les champs.</p>`;
+
+    }
+
+  
+
+    // Exemple de requête si tu as un vrai backend (PHP, Node.js, etc.)
+
+    /*
+
+    fetch('submit_message.php', {
+
+      method: 'POST',
+
+      headers: {
+
+        'Content-Type': 'application/x-www-form-urlencoded'
+
+      },
+
+      body: `nom=${encodeURIComponent(nom)}&email=${encodeURIComponent(email)}&message=${encodeURIComponent(message)}`
+
+    })
+
+    .then(response => response.text())
+
+    .then(data => {
+
+      responseDiv.innerHTML = data;
+
+    })
+
+    .catch(error => {
+
+      responseDiv.innerHTML = '<p style="color:red;">Erreur lors de l\'envoi.</p>';
+
+      console.error('Erreur:', error);
+
+    });
+
+    */
+
+  });
+
+  
+
+
+
+
+
+  
+
+// Vérifie si un utilisateur est connecté
+
+const newUser = localStorage.getItem("newUser");
+
+    
+
+if (newUser) {
+
+  document.getElementById("welcome").textContent = `Bienvenue, ${newUser} !`;
+
+} else {
+
+  // Personne connecté → redirection automatique
+
+  window.location.href = "login.html";
+
+}
+
+
+
+// Gestion du bouton déconnexion
+
+const logoutBtn = document.getElementById("logoutBtn");
+
+if (logoutBtn) {
+
+  logoutBtn.addEventListener("click", () => {
+
+    localStorage.removeItem("newUser"); // On supprime l'utilisateur actif
+
+    window.location.href = "login.html"; // On retourne à la page de connexion
+
+  });
+
+}
+
+
+
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  chargerMessages(); // Charge les messages au chargement
+
+
+
+  window.envoyerMessage = function () {
+
+      const textarea = document.getElementById("newMessage");
+
+      const contenu = textarea.value.trim();
+
+
+
+      if (!contenu) {
+
+          alert("Veuillez écrire un message !");
+
+          return;
+
+      }
+
+
+
+      const message = {
+
+          content: contenu,
+
+          date: new Date().toLocaleString()
+
+      };
+
+
+
+      // Enregistrer dans localStorage
+
+      const messages = JSON.parse(localStorage.getItem("messages")) || [];
+
+      messages.push(message);
+
+      localStorage.setItem("messages", JSON.stringify(messages));
+
+
+
+      textarea.value = ""; // Vide la zone de texte
+
+      chargerMessages(); // Recharge les messages
+
+  };
+
+});
+
+
+
+function chargerMessages() {
+
+  const liste = document.getElementById("messageList");
+
+  liste.innerHTML = ""; // Vide la liste
+
+
+
+  const messages = JSON.parse(localStorage.getItem("messages")) || [];
+
+
+
+  messages.forEach(msg => {
+
+      const li = document.createElement("li");
+
+      li.textContent = `${msg.date} - ${msg.content}`;
+
+      liste.appendChild(li);
+
+  });
+};
+
+<!DOCTYPE html>
+<html lang="fr">
+ <head>
+  <meta charset="UTF-8">
+  <title>Contact Parent</title>
+  <link rel="stylesheet" href="styles.css">
+ 
+</head>
+<body>
+</div>
+<nav>
+  <ul>
+    <li><a href="admn.html">Admnistracteur</a></li>
+    <li><a href="dashboard.html">Tableau de bord</a></li>
+    <li><a href="contact.html">Formulaire de Contact</a></li>
+    <li><a href="messages.html">Messagerie</a></li>
+    <li><a href="Listes.html">Rapport de fin d'année</a></li>
+    <li><a href="personnels-ecole.html">Listes de personnels</a></li>
+    <li><a href="event.html">Événements</a></li>
+    <li><a href="gallerie.html">Galerie</a></li>
+    <li><a href="inscription.html">Inscription en ligne</a></li>
+    <li><a href="reception.html">Mes messages</a></li>
+    <li><a href="index.html">Acueil</a></li>
+    <li><a href="exam.html">text d'entré</a></li>
+    <li><a href="mes.cours.html">mes pdf</a></li>
+   <li><a href="paie.html">Tarifs</a></li>
+   <li><a href="login.html">Connexion</a></li>
+<li><a href="Creer-un-compte.html">Creer un compte</a></li>
+  </ul>
+</nav>
+
+
+  <h2>Envoyer un message à l'école</h2>
+
+  <form id="formContact">
+    <label for="nom">Nom :</label><br>
+    <input type="text" id="nom" name="nom" required><br><br>
+
+    <label for="message">Message :</label><br>
+    <textarea id="message" name="message" required></textarea><br><br>
+
+    <button type="submit">Envoyer</button>
+  </form>
+  <script src="main.js"> </script>
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen d'admission</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f7f7;
+            padding: 20px;
+        }
+        #text-exam, #quiz-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #0077cc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #005fa3;
+        }
+        #timer {
+            font-size: 18px;
+            font-weight: bold;
+            color: red;
+            text-align: center;
+        }
+        #result {
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Passer votre examen d'admission</h1>
+    <p>Bonjour chers élèves de l'école X, veuillez choisir vos cours pour commencer l'examen.</p>
+
+    <form id="text-exam">
+        <h2>Choisissez votre cours :</h2>
+         <label><input type="radio" id="Math"> Math</label><br>
+        <label><input type="radio" id="Francais"> Français</label><br>
+        <label><input type="radio" id="Latin"> Latin</label><br><br>
+        <button type="button" id="start-btn" onclick="startExam()">Commencer l'examen</button>
+    </form>
+
+    <div id="timer"></div>
+
+    <div id="quiz-container" style="display:none;"></div>
+
+    <div id="result"></div>
+
+
+  <script src="main.js"></script>
+</body>
+</html>
+
+
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECOLE DE LA RDC</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+     <div class="curtain">
+    <div class="curtain-left"></div>
+    <div class="curtain-right"></div>
+    <div class="zipper"></div>
+  </div>
+  <header class="topbar">
+    <div class="left">
+      <i class="fas fa-bars menu-icon"></i>
+      <img src="photo/IMG_E2464.JPG" alt="Logo" class="logo">
+    </div>
+      
+    <div class="center">
+      <select class="year-selector">
+        <option>2024-2025</option>
+        <option>2023-2024</option>
+        <option>2022-2023</option>
+        <option>2021-2022</option>
+        <option>2020-2021</option>
+        <option> 2019-2020</option>
+      </select>
+    </div>
+      
+        <div class="right">
+          <i class="fas fa-bell notification-icon"></i>
+          <img src="photo/IMG_E2464.JPG" alt="Profil" class="profile-pic">
+          <span class="school-name">COMPLEXE SCOLAIRE PAULIN DE L'ETERNEL</span>
+          <img src="photo/flag-A4_Democratic-Republic-of-the-Congo-flag.png" alt="Drapeau RDC" class="flag">
+        </div>
+    </header>
+
+  <div class="curtain">
+    <div class="curtain-left"></div>
+    <div class="curtain-right"></div>
+    <div class="zipper"></div>
+  </div>
+  <header class="topbar">
+    <div class="left">
+      <i class="fas fa-bars menu-icon"></i>
+      <img src="photo/IMG_E2464.JPG" alt="Logo" class="logo">
+    </div>
+      
+    <div class="center">
+      <select class="year-selector">
+        <option>2024-2025</option>
+        <option>2023-2024</option>
+        <option>2022-2023</option>
+        <option>2021-2022</option>
+        <option>2020-2021</option>
+        <option> 2019-2020</option>
+      </select>
+    </div>
+      
+        <div class="right">
+          <i class="fas fa-bell notification-icon"></i>
+          <img src="photo/IMG_E2464.JPG" alt="Profil" class="profile-pic">
+          <span class="school-name">COMPLEXE SCOLAIRE PAULIN DE L'ETERNEL</span>
+          <img src="photo/flag-A4_Democratic-Republic-of-the-Congo-flag.png" alt="Drapeau RDC" class="flag">
+        </div>
+        <img src="photo/IMG_E2464.JPG" alt="Logo de l'école" class="logo" width="50">
+        <div class="welcome-container">
+        <h1>Bienvenue sur le site de notre ecole Complexe Scolaire Paulin De L'eternel</h1>
+        <h2>À propos de notre site</h2>
+        <p>Notre site permet une communication fluide et directe entre les parents et l'école.
+            Suivez les progrès de vos enfants et restez informés des événements scolaires.
+        </p>
+      </header>
+    
+    <!-- Entête -->
+    <header>
+        <img src="photo/IMG_E2464.JPG" alt="Logo de l'école" class="logo" width="50">
+        <div class="welcome-container">
+        <h1>Bienvenue sur le site de notre ecole Complexe Scolaire Paulin De L'eternel</h1>
+        <h2>À propos de notre site</h2>
+        <p>Notre site permet une communication fluide et directe entre les parents et l'école.
+            Suivez les progrès de vos enfants et restez informés des événements scolaires.
+        </p>
+    <!-- Présentation de l'école -->
+    <section id="histoire-ecole">
+        <h2>Notre École</h2>
+        <p>
+          Le Complexe Scolaire Paulin de l'Éternel a été fondé en 2016. Par Paulin Kanundowa,
+            avec la vision d'offrir une éducation de qualité aux enfants et aux jeunes. 
+            Depuis sa création.
+            l'établissement s'est distingué par son engagement envers l'excellence académique,
+            la discipline et la formation de citoyens responsables. <br> Dès ses débuts, 
+            l'école a mis en place
+            un environnement d'apprentissage stimulant, 
+            favorisant le développement intellectuel, moral. <br>
+            et social de chaque élève. Grâce à une équipe pédagogique qualifiée et des infrastructures
+            adaptées,<br> le Complexe Scolaire Paulin de l'Éternel accueille des élèves de différents. <br>niveaux,
+            de la maternelle au secondaire.
+        </p>
+        <img src="photo/AARON.png" alt="Notre école - vue extérieure" width="325">
+        <img src="photo/IMG_2356.JPG" alt="Élèves dans la salle machine" width="300">
+        <img src="photo/IMG_2363.JPG" alt="Notre école vue intérieure" width="300">
+        <img src="photo/IMG_2353.JPG" alt="School"width="300">
+    </section>
+
+    <section class="accueil-inscription">
+      <h3>Offrez à votre enfant un avenir brillant ✨</h3>
+      <p>
+        Chers parents, l’éducation est le plus beau cadeau que vous puissiez offrir à vos enfants. 
+        À notre école, nous mettons tout en œuvre pour accueillir chaque élève dans un cadre chaleureux, 
+        sécurisé et propice à l’épanouissement personnel et académique. 🌱<br><br>
+    
+        Ne tardez pas ! Les inscriptions sont ouvertes dès maintenant. 
+        Réservez une place pour votre enfant et rejoignez une communauté engagée, 
+        passionnée et tournée vers l’excellence. 🎓💼<br><br>
+    
+        <strong>Construisons ensemble l’avenir de vos enfants, dès aujourd’hui !</strong>
+      </p>
+    
+      <a href="inscription.html" class="btn-inscription">Inscrire mon enfant</a>
+    </section>
+
+    <section class="histoire-ecole">
+      <h2>Notre Histoire, Notre Mission 🎓</h2>
+      <p>
+        Il était une fois, dans un quartier calme et rempli de rêves, une petite école qui ouvrait ses portes avec une seule conviction : 
+        que chaque enfant a droit à une éducation digne, humaine et inspirante. Depuis ce jour, notre école n’a cessé de grandir – pas seulement 
+        en nombre d’élèves ou de salles de classe – mais en amour, en valeurs, en histoire et en espoir. 💫<br><br>
+    
+        Ici, nous croyons que l’école n’est pas seulement un lieu où l’on apprend à lire ou à compter. C’est un endroit où l’on apprend à vivre, 
+        à partager, à s’émerveiller du monde qui nous entoure. Chaque couloir a entendu des rires d’enfants, chaque banc a porté les rêves d’un avenir meilleur. 
+        Chaque enseignant, chaque membre du personnel, est un artisan silencieux qui façonne les citoyens de demain. ❤️<br><br>
+    
+        Depuis plusieurs années, notre école accueille des générations d’enfants, et chacun y a laissé une trace : un sourire, un souvenir, 
+        une petite étincelle de lumière. Nous ne sommes pas simplement une institution : nous sommes une grande famille, un second foyer 
+        pour tous ceux qui franchissent nos portes.<br><br>
+    
+        Que vous soyez parent, élève ou simple visiteur, sachez que vous êtes ici chez vous. Vous êtes au cœur d’un lieu où les valeurs d’amour, 
+        de respect, d’excellence et de discipline sont vécues au quotidien. Parce que nous ne formons pas que des élèves : nous éveillons des 
+        talents, nous bâtissons des avenirs, nous cultivons des cœurs. 🌱<br><br>
+    
+        Et si l’avenir de votre enfant commençait ici ? 💖
+      </p>
+    </section>
+    <h3>Paroles de l’hymne :</h3>
+    <pre style="background:white 15px;border-radius:8px;">
+Debout Congolais,
+Unis par le sort,
+Unis dans l’effort pour l’indépendance,
+Dressons nos fronts longtemps courbés
+Et pour de bon prenons le plus bel élan, dans la paix.
+
+Ô peuple ardent,
+Par le labeur,
+Nous bâtirons un pays plus beau qu’avant,
+Dans la paix.
+
+Citoyens, entonnez l’hymne sacré de votre solidarité,
+Fièrement saluez l’emblème d’or de votre souveraineté,
+Congo.
+
+Don béni, Congo,
+Des aïeux, Congo,
+Ô pays, Congo,
+Bien aimé, Congo.
+Nous peuplerons ton sol et nous assurerons ta grandeur.
+</pre>
+
+    <!-- Lien audio (fichier à héberger si disponible) -->
+    <audio controls>
+        <source src="audio/National Anthem of DR Congo - Debout Congolais [9agJD-fRbxA].mp3" type="audio/mpeg">
+        Votre navigateur ne supporte pas la lecture audio.
+    </audio>
+<section>
+    
+    
+
+    <!-- Règlement -->
+    <section id="reglement-ecole">
+        <h2>📋 Règlement intérieur de l’école</h2>
+        <p>
+          Le règlement intérieur a pour objectif de garantir le bon fonctionnement de l’école, d’assurer un climat de travail 
+          favorable à l’apprentissage, au respect de soi et des autres. Chaque élève, chaque parent et chaque membre du personnel 
+          est invité à prendre connaissance de ces règles essentielles à la vie collective. Ensemble, construisons une école responsable, 
+          bienveillante et épanouissante pour tous. 🤝<br><br>
+      
+          <strong>1. Ponctualité et assiduité ⏰</strong><br>
+          Les élèves doivent arriver à l’heure. Toute absence doit être justifiée par un mot des parents ou un certificat médical. 
+          Les retards répétés peuvent entraîner des sanctions éducatives.<br><br>
+      
+          <strong>2. Tenue vestimentaire 👔</strong><br>
+          Une tenue correcte et propre est exigée. L’uniforme de l’école (si applicable) doit être porté chaque jour de classe, 
+          sauf indication contraire. Les signes ostentatoires ou provocateurs sont interdits.<br><br>
+      
+          <strong>3. Respect des personnes et des lieux 🏫</strong><br>
+          Les insultes, violences, moqueries, intimidations ou toute forme de harcèlement sont strictement interdites. 
+          Le respect envers les enseignants, le personnel et les camarades est fondamental. Les locaux doivent être maintenus propres 
+          et en bon état.<br><br>
+      
+          <strong>4. Matériel et devoirs 🎒</strong><br>
+          Chaque élève doit apporter son matériel scolaire et faire ses devoirs avec sérieux. La détérioration volontaire du matériel 
+          scolaire ou des biens de l’école sera sanctionnée.<br><br>
+      
+          <strong>5. Téléphones et objets personnels 📵</strong><br>
+          L’usage du téléphone portable est interdit pendant les heures de classe. L’école décline toute responsabilité en cas de perte 
+          ou de vol d’objets personnels non autorisés.<br><br>
+      
+          <strong>6. Sécurité et santé 🩺</strong><br>
+          Il est formellement interdit d’introduire dans l’école des objets dangereux, substances interdites ou de consommer 
+          tout produit nocif. Toute situation inhabituelle doit être immédiatement signalée à un adulte responsable.<br><br>
+      
+          <strong>7. Participation et comportement 🌟</strong><br>
+          Les élèves doivent adopter un comportement exemplaire en classe et dans la cour. La participation active, le silence pendant 
+          les cours et la coopération sont essentiels au bon déroulement des activités pédagogiques.<br><br>
+      
+          <strong>8. Sanctions éducatives ⚖️</strong><br>
+          En cas de non-respect du règlement, des sanctions peuvent être appliquées, allant de l’avertissement à une exclusion temporaire. 
+          L’objectif est toujours éducatif et non punitif : aider l’élève à comprendre et à grandir.<br><br>
+      
+          <em>En inscrivant votre enfant dans notre école, vous vous engagez à respecter ce règlement. Nous vous remercions pour votre 
+          collaboration et votre confiance. Ensemble, créons une école où il fait bon apprendre, évoluer et rêver.</em> 💙
+        </p>
+      </section>
+    </section>
+    <!-- FAQ -->
+    <section id="faq-item">
+        <div class="faq-item">
+          <h3>📅 Quand commencent les inscriptions ?</h3>
+          <p>Les inscriptions sont ouvertes dès le mois de juillet pour l'année scolaire suivante. Nous recommandons de ne pas attendre, les places sont limitées.</p>
+        </div>
+      
+        <div class="faq-item">
+          <h3>🎓 Quels niveaux d’enseignement proposez-vous ?</h3>
+          <p>Nous accueillons les enfants de la Maternelle au Secondaire. Chaque niveau est encadré par des enseignants qualifiés et bienveillants.</p>
+        </div>
+      
+        <div class="faq-item">
+          <h3>🕘 À quelle heure commencent les cours ?</h3>
+          <p>Les cours commencent à 7h30 précises. Les portes de l’école sont ouvertes à partir de 7h00 pour accueillir les enfants.</p>
+        </div>
+      
+        <div class="faq-item">
+          <h3>🍱 Est-ce que les enfants mangent à l’école ?</h3>
+          <p>Oui, nous proposons un service de cantine équilibrée. Vous pouvez également préparer un repas maison à votre enfant si vous le préférez.</p>
+        </div>
+      
+        <div class="faq-item">
+          <h3>💰 Quels sont les frais de scolarité ?</h3>
+          <p>Les frais varient selon le niveau de votre enfant. Merci de consulter notre secrétariat ou la page <a href="paie.html">Tarifs</a> pour plus de détails.</p>
+        </div>
+      
+        <div class="faq-item">
+          <h3>🧑‍🏫 Comment suivre la progression de mon enfant ?</h3>
+          <p>Nous organisons régulièrement des réunions parents-professeurs. Vous pouvez aussi suivre les résultats via notre messagerie ou tableau de bord en ligne.</p>
+        </div>
+      
+        <div class="faq-item">
+          <h3>📞 Qui contacter en cas de problème ?</h3>
+          <p>Vous pouvez toujours appeler l’école au <a href="tel:+243838619545">+243 838 619 545</a> ou passer par le <a href="contact.html">formulaire de contact</a>.</p>
+        </div>
+      </section>
+      
+    </section>
+    <script src="script.js"></script>
+
+      <nav>
+      <ul>
+          <li><a href="admn.html">Admnistracteur</a></li>
+    <li><a href="dashboard.html">Tableau de bord</a></li>
+    <li><a href="contact.html">Formulaire de Contact</a></li>
+    <li><a href="messages.html">Messagerie</a></li>
+    <li><a href="Listes.html">Rapport de fin d'année</a></li>
+    <li><a href="personnels-ecole.html">Listes de personnels</a></li>
+    <li><a href="event.html">Événements</a></li>
+    <li><a href="gallerie.html">Galerie</a></li>
+    <li><a href="inscription.html">Inscription en ligne</a></li>
+    <li><a href="reception.html">Mes messages</a></li>
+    <li><a href="index.html">Acueil</a></li>
+    <li><a href="exam.html">text d'entré</a></li>
+    <li><a href="mes.cours.html">mes pdf</a></li>
+   <li><a href="paie.html">Tarifs</a></li>
+   <li><a href="login.html">Connexion</a></li>
+   <li><a href="Creer-un-compte.html">Creer un compte</a></li>
+   <li><a href="admin-messages.html">adm</a></li>
+   <li><a href="inscription-eleve.html">m'inscrire</a></li>
+   <li><a href="admin-inscriptions.html">voir les inscription</a></li>
+   <li><a href="admin-publier-message.html">send</a></li>
+       
+      </ul>
+    </nav>
+
+  </div>
+<footer> &<p>📞 COMPLEXE SCOLAIRE PAULIN DE L'ETERNEL | Contact : <a href="tel:+243838619545">+243 838619545</a></p> </footer>
+<script src="rideau.js"></script>
+</body>
+</html>
+
+
+
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Inscription Élève</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+   <header style="background-color: hsl(142, 70%, 49%); color: #333;">
+    <h1>INSCRIPTION EN LIGNE</h1>
+     <img src="photo/IMG_E2464.JPG" alt="Logo de l'école" class="logo" width="50">
+    <nav>
+      <ul>
+        <li><a href="admin-inscriptions.html">admin inscription</a></li>
+        <li><a href="admin-messages.html">admin scpe message </a></li>
+        <li><a href="admin-publier-message.html">admin publication</a></li>
+        <li><a href="admn.html">admin</a></li>
+        <li><a href="contact.html">formulaire de contact</a></li>
+        <li><a href="dashboard.html">Tableau de bord</a></li>
+        <li><a href="event.html">nos evenement</a></li>
+        <li><a href="exam.html">examen en ligne</a></li>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="gallerie.html">Nos gallerie</a></li>
+        <li><a href="inscription-eleve.html">inscrivez vous </a></li>
+        <li><a href="inscription.html">ins</a></li>
+        <li><a href="Listes.html">les meilleurs éleves</a></li>
+        <li><a href="mes.cours.html">mes cours</a></li>
+        <li><a href="paie.html">frais</a></li>
+        <li><a href="personnels-ecole.html">personnels</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <h2>Formulaire d'inscription des élèves</h2>
+
+  <form action="enregistrer-eleve.php" method="POST">
+    <label for="nom">Nom de l'élève :</label><br>
+    <input type="text" id="nom" name="nom" required><br><br>
+
+    <label for="prenom">Prénom :</label><br>
+    <input type="text" id="prenom" name="prenom" required><br><br>
+
+    <label for="classe">Classe :</label><br>
+    <input type="text" id="classe" name="classe" required><br><br>
+
+    <label for="parent">Nom du parent :</label><br>
+    <input type="text" id="parent" name="parent" required><br><br>
+
+    <label for="telephone">Téléphone du parent :</label><br>
+    <input type="text" id="telephone" name="telephone" required><br><br>
+
+    <button type="submit">Envoyer l'inscription</button>
+  </form>
+
+</body>
+</html>
+
+
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Inscription Élève</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: hsl(142, 70%, 49%);
+      color: #333;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px;
+      position: relative;
+    }
+
+    .logo {
+      width: 50px;
+      border-radius: 50%;
+    }
+
+    h1 {
+      font-size:40px;
+      margin: 0;
+    }
+
+    /* Menu toggle caché */
+    .menu-toggle {
+      display: none;
+    }
+
+    .menu-icon {
+      font-size: 28px;
+      cursor: pointer;
+      user-select: none;
+      padding: 10px;
+    }
+
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      background-color: #2c3e50;
+      position: fixed;
+      top: 0;
+      left: -260px; /* caché à gauche */
+      height: 100%;
+      width: 250px;
+      z-index: 1000;
+      transition: left 0.3s ease;
+    }
+
+    nav ul li {
+      border-bottom: 1px solid #444;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      padding: 12px 20px;
+      display: block;
+    }
+
+    nav ul li a:hover {
+      background-color: #1abc9c;
+    }
+
+    /* Afficher le menu si coché */
+    .menu-toggle:checked + .menu-icon + nav ul {
+      left: 0;
+    }
+
+    form {
+      padding: 20px;
+    }
+
+    label, input {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: hsl(142, 70%, 49%);
+      border: none;
+      cursor: pointer;
+      color: #fff;
+    }
+
+    button:hover {
+      background-color: #28a745;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>INSCRIPTION EN LIGNE</h1>
+    <img src="photo/IMG_E2464.JPG" alt="Logo de l'école" class="logo">
+
+    <!-- Menu hamburger à droite -->
+    <input type="checkbox" id="menu-toggle" class="menu-toggle">
+    <label for="menu-toggle" class="menu-icon">&#9776;</label>
+
+    <!-- Menu glissant depuis la gauche -->
+    <nav>
+      <ul>
+        <li><a href="admin-inscriptions.html">admin inscription</a></li>
+        <li><a href="admin-messages.html">admin scpe message</a></li>
+        <li><a href="admin-publier-message.html">admin publication</a></li>
+        <li><a href="admn.html">admin</a></li>
+        <li><a href="contact.html">formulaire de contact</a></li>
+        <li><a href="dashboard.html">Tableau de bord</a></li>
+        <li><a href="event.html">nos evenement</a></li>
+        <li><a href="exam.html">examen en ligne</a></li>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="gallerie.html">Nos gallerie</a></li>
+        <li><a href="inscription-eleve.html">inscrivez vous</a></li>
+        <li><a href="inscription.html">ins</a></li>
+        <li><a href="Listes.html">les meilleurs éleves</a></li>
+        <li><a href="mes.cours.html">mes cours</a></li>
+        <li><a href="paie.html">frais</a></li>
+        <li><a href="personnels-ecole.html">personnels</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <h2>Formulaire d'inscription des élèves</h2>
+
+  <form action="enregistrer-eleve.php" method="POST">
+    <label for="nom">Nom de l'élève :</label>
+    <input type="text" id="nom" name="nom" required>
+
+    <label for="prenom">Prénom :</label>
+    <input type="text" id="prenom" name="prenom" required>
+
+    <label for="classe">Classe :</label>
+    <input type="text" id="classe" name="classe" required>
+
+    <label for="parent">Nom du parent :</label>
+    <input type="text" id="parent" name="parent" required>
+
+    <label for="telephone">Téléphone du parent :</label>
+    <input type="text" id="telephone" name="telephone" required>
+
+    <button type="submit">Envoyer l'inscription</button>
+  </form>
+
+</body>
+</html>
+
+
+ <div class="curtain">
+    <div class="curtain-left"></div>
+    <div class="curtain-right"></div>
+    <div class="zipper"></div>
+  </div>
+  <header class="topbar">
+    <div class="left">
+      <i class="fas fa-bars menu-icon"></i>
+      <img src="photo/IMG_E2464.JPG" alt="Logo" class="logo">
+    </div>
+      
+        <div class="center">
+          <select class="year-selector">
+            <option>2024-2025</option>
+            <option>2023-2024</option>
+            <option>2022-2023</option>
+            <option>2021-2022</option>
+            <option>2020-2021</option>
+          </select>
+        </div>
+      
+        <div class="right">
+          <i class="fas fa-bell notification-icon"></i>
+          <img src="photo/IMG_E2464.JPG" alt="Profil" class="profile-pic">
+          <span class="school-name">COMPLEXE SCOLAIRE PAULIN DE L'ETERNEL</span>
+          <img src="photo/flag-A4_Democratic-Republic-of-the-Congo-flag.png" alt="Drapeau RDC" class="flag">
+        </div>
+      </header>
+

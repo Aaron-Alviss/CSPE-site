@@ -1,0 +1,32 @@
+<!-- inscription.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Inscription à l'école</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h2>Formulaire d'inscription</h2>
+    <form action="inscription.php" method="post">
+        Nom : <input type="text" name="nom" required><br><br>
+        Prénom : <input type="text" name="prenom" required><br><br>
+        Email : <input type="email" name="email" required><br><br>
+        Téléphone : <input type="text" name="telephone" required><br><br>
+        Niveau scolaire :
+        <select name="niveau" required>
+            <option value="">--Choisir un niveau--</option>
+            <option value="6ème">6ème</option>
+            <option value="5ème">5ème</option>
+            <option value="4ème">4ème</option>
+            <option value="3ème">3ème</option>
+            <option value="2nde">2nde</option>
+            <option value="1ère">1ère</option>
+            <option value="Terminale">Terminale</option>
+        </select><br><br>
+        <input type="submit" value="S'inscrire">
+    </form>
+    <a href="liste_inscriptions.php">📄 Voir les inscriptions</a>
+
+</body>
+</html>
